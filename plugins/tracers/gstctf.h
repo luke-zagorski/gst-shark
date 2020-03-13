@@ -53,7 +53,8 @@ void do_print_bitrate_event (event_id id, gchar * elementname, guint64 bps);
 void do_print_buffer_event (event_id id, const gchar * pad, GstClockTime pts,
     GstClockTime dts, GstClockTime duration, guint64 offset,
     guint64 offset_end, guint64 size, GstBufferFlags flags,
-    guint32 refcount);
+    guint32 refcount,
+    guint64 timestampVal);
 void do_print_ctf_init (event_id id);
 G_END_DECLS
 #endif /*__GST_CTF_H__*/

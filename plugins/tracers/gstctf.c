@@ -1027,7 +1027,7 @@ do_print_bitrate_event (event_id id, gchar * elementname, guint64 bps)
 void
 do_print_buffer_event (event_id id, const gchar * pad, GstClockTime pts,
     GstClockTime dts, GstClockTime duration, guint64 offset,
-    guint64 offset_end, guint64 size, GstBufferFlags flags, guint32 refcount)
+    guint64 offset_end, guint64 size, GstBufferFlags flags, guint32 refcount, guint64 timestamp)
 {
   GError *error;
   guint8 *mem;
@@ -1060,6 +1060,7 @@ do_print_buffer_event (event_id id, const gchar * pad, GstClockTime pts,
   CTF_EVENT_WRITE_INT64 (size, event_mem);
   CTF_EVENT_WRITE_INT32 (flags, event_mem);
   CTF_EVENT_WRITE_INT32 (refcount, event_mem);
+  CTF_EVENT_WRITE_INT64 (timestamp, event_mem);
 
   if (FALSE == ctf_descriptor->file_output_disable) {
     event_mem -= event_size;
