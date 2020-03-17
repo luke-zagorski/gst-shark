@@ -26,6 +26,7 @@
 
 #include "gstbuffer.h"
 #include "gstctf.h"
+#include <sys/time.h>
 
 GST_DEBUG_CATEGORY_STATIC (gst_buffer_debug);
 #define GST_CAT_DEFAULT gst_buffer_debug
@@ -112,8 +113,17 @@ gst_buffer_buffer_pre (GObject * self, GstClockTime ts, GstPad * pad,
 
   GstMapInfo map  = {0};
   gst_buffer_map (buffer, &map, GST_MAP_READ);
+
   guint64 timestampVal;
   memcpy(&timestampVal, map.data + (map.size-32), 8);
+
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+
+  guint64 millisecondsSinceEpoch =
+    (unsigned long long)(tv.tv_sec) * 1000 +
+    (unsigned long long)(tv.tv_usec) / 1000;
+
   gst_buffer_unmap(buffer, &map);
 
   gst_tracer_record_log (tr_buffer, pad_name, spts, sdts, sduration, offset,
@@ -183,7 +193,11 @@ gst_buffer_tracer_class_init (GstBufferTracerClass * klass)
           "description", G_TYPE_STRING, "Flags", NULL), "refcount",
       GST_TYPE_STRUCTURE, gst_structure_new ("value", "type", G_TYPE_GTYPE,
           G_TYPE_UINT, "description", G_TYPE_STRING, "Ref Count", "min",
-          G_TYPE_UINT, 0, "max", G_TYPE_UINT, G_MAXUINT32, NULL), "frameTimestamp",
+          G_TYPE_UINT, 0, "max", G_TYPE_UINT, G_MAXUINT32, NULL), "producerFrameTimestamp",
+       GST_TYPE_STRUCTURE, gst_structure_new ("value", "type", G_TYPE_GTYPE,
+          G_TYPE_UINT64, "description", G_TYPE_STRING, "ftimestamp", "min",
+          G_TYPE_UINT64, G_GUINT64_CONSTANT (0), "max", G_TYPE_UINT64,
+          G_MAXUINT64, NULL),"padTimestamp",
        GST_TYPE_STRUCTURE, gst_structure_new ("value", "type", G_TYPE_GTYPE,
           G_TYPE_UINT64, "description", G_TYPE_STRING, "ftimestamp", "min",
           G_TYPE_UINT64, G_GUINT64_CONSTANT (0), "max", G_TYPE_UINT64,
