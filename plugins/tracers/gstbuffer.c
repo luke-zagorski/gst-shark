@@ -65,6 +65,8 @@ static const gchar buffer_metadata_event[] = "event {\n\
         integer { size = 64; align = 8; signed = 0; encoding = none; base = 10; } size;\n\
         integer { size = 32; align = 8; signed = 0; encoding = none; base = 10; } flags;\n\
         integer { size = 32; align = 8; signed = 0; encoding = none; base = 10; } refcount;\n\
+        integer { size = 64; align = 8; signed = 0; encoding = none; base = 10; } producer_timestamp;\n\
+        integer { size = 64; align = 8; signed = 0; encoding = none; base = 10; } pad_timestamp;\n\
     };\n\
 };\n\
 \n";
@@ -193,11 +195,11 @@ gst_buffer_tracer_class_init (GstBufferTracerClass * klass)
           "description", G_TYPE_STRING, "Flags", NULL), "refcount",
       GST_TYPE_STRUCTURE, gst_structure_new ("value", "type", G_TYPE_GTYPE,
           G_TYPE_UINT, "description", G_TYPE_STRING, "Ref Count", "min",
-          G_TYPE_UINT, 0, "max", G_TYPE_UINT, G_MAXUINT32, NULL), "producerFrameTimestamp",
+          G_TYPE_UINT, 0, "max", G_TYPE_UINT, G_MAXUINT32, NULL), "producer_timestamp",
        GST_TYPE_STRUCTURE, gst_structure_new ("value", "type", G_TYPE_GTYPE,
           G_TYPE_UINT64, "description", G_TYPE_STRING, "ftimestamp", "min",
           G_TYPE_UINT64, G_GUINT64_CONSTANT (0), "max", G_TYPE_UINT64,
-          G_MAXUINT64, NULL),"padTimestamp",
+          G_MAXUINT64, NULL),"pad_timestamp",
        GST_TYPE_STRUCTURE, gst_structure_new ("value", "type", G_TYPE_GTYPE,
           G_TYPE_UINT64, "description", G_TYPE_STRING, "ftimestamp", "min",
           G_TYPE_UINT64, G_GUINT64_CONSTANT (0), "max", G_TYPE_UINT64,
