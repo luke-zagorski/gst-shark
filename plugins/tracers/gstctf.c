@@ -1035,7 +1035,7 @@ do_print_buffer_event (event_id id, const gchar * pad, GstClockTime pts,
   gsize event_size;
 
   event_size =
-      strlen (pad) + 1 + 6 * sizeof (guint64) + 2 * sizeof (guint32) +
+      strlen (pad) + 1 + 6 * sizeof (guint64) + 2 * sizeof (guint32) + 2 * sizeof (guint64) +
       CTF_HEADER_SIZE;
 
   if (event_exceeds_mem_size (event_size)) {
