@@ -127,10 +127,10 @@ gst_buffer_buffer_pre (GObject * self, GstClockTime ts, GstPad * pad,
   gst_buffer_unmap(buffer, &map);
 
   gst_tracer_record_log (tr_buffer, pad_name, spts, sdts, sduration, offset,
-      offset_end, size, sflags, refcount, timestampVal);
+      offset_end, size, sflags, refcount, timestampVal, millisecondsSinceEpoch);
 
   do_print_buffer_event (BUFFER_EVENT_ID, pad_name, pts, dts, duration,
-      offset, offset_end, size, flags, refcount, timestampVal);
+      offset, offset_end, size, flags, refcount, timestampVal, millisecondsSinceEpoch);
 
   g_value_unset (&vflags);
   g_free (spts);
